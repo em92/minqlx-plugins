@@ -29,9 +29,9 @@ RATING_KEY = "minqlx:players:{0}:ratings:{1}" # 0 == steam_id, 1 == short gamety
 MAX_ATTEMPTS = 3
 CACHE_EXPIRE = 60*30 # 30 minutes TTL.
 DEFAULT_RATING = 1500
-SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm")
+SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm", "ad")
 # Externally supported game types. Used by !getrating for game types the API works with.
-EXT_SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm", "duel", "ffa")
+EXT_SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm", "duel", "ffa", "ad")
 
 class balance(minqlx.Plugin):
     database = Redis
@@ -60,7 +60,7 @@ class balance(minqlx.Plugin):
         self.in_countdown = False
 
         self.set_cvar_once("qlx_balanceUseLocal", "1")
-        self.set_cvar_once("qlx_balanceUrl", "qlstats.net:8080")
+        self.set_cvar_once("qlx_balanceUrl", "eugene24.ru:6480")
         self.set_cvar_once("qlx_balanceAuto", "1")
         self.set_cvar_once("qlx_balanceMinimumSuggestionDiff", "25")
         self.set_cvar_once("qlx_balanceApi", "elo")
