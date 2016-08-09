@@ -27,7 +27,7 @@ from minqlx.database import Redis
 
 RATING_KEY = "minqlx:players:{0}:ratings:{1}" # 0 == steam_id, 1 == short gametype.
 MAX_ATTEMPTS = 3
-CACHE_EXPIRE = 60*5 # 30 minutes TTL.
+CACHE_EXPIRE = 60*1 # 1 minute TTL.
 DEFAULT_RATING = 20
 SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm", "ad")
 # Externally supported game types. Used by !getrating for game types the API works with.
