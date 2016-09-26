@@ -77,6 +77,9 @@ class fun(minqlx.Plugin):
         if channel != "chat":
             return
 
+        if self.db.has_permission(player, 2) == False:
+            return
+
         msg = self.clean_text(msg)
         if _re_hahaha_yeah.match(msg):
             self.play_sound("sound/player/lucy/taunt.wav")
