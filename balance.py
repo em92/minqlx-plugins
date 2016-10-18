@@ -60,9 +60,9 @@ class balance(minqlx.Plugin):
         self.in_countdown = False
 
         self.set_cvar_once("qlx_balanceUseLocal", "1")
-        self.set_cvar_once("qlx_balanceUrl", "eugene24.ru:6480")
+        self.set_cvar_once("qlx_balanceUrl", "vds2.eugene24.ru:7081")
         self.set_cvar_once("qlx_balanceAuto", "1")
-        self.set_cvar_once("qlx_balanceMinimumSuggestionDiff", "25")
+        self.set_cvar_once("qlx_balanceMinimumSuggestionDiff", "1")
         self.set_cvar_once("qlx_balanceApi", "elo")
 
         self.use_local = self.get_cvar("qlx_balanceUseLocal", bool)
