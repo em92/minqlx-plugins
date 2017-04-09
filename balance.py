@@ -27,8 +27,8 @@ from minqlx.database import Redis
 
 RATING_KEY = "minqlx:players:{0}:ratings:{1}" # 0 == steam_id, 1 == short gametype.
 MAX_ATTEMPTS = 3
-CACHE_EXPIRE = 60*30 # 30 minutes TTL.
-DEFAULT_RATING = 1500
+CACHE_EXPIRE = 60*10 # 10 minutes TTL.
+DEFAULT_RATING = 666
 SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm")
 # Externally supported game types. Used by !getrating for game types the API works with.
 EXT_SUPPORTED_GAMETYPES = ("ca", "ctf", "dom", "ft", "tdm", "duel", "ffa")
@@ -149,7 +149,7 @@ class balance(minqlx.Plugin):
                         p[gt]["time"] = t
                         p[gt]["local"] = False
                         self.ratings[sid][gt] = p[gt]
-                        if self.ratings[sid][gt]["elo"] == 0 and self.ratings[sid][gt]["games"] == 0:
+                        if self.ratings[sid][gt]["elo"] == 0 or self.ratings[sid][gt]["games"] == 0:
                             self.ratings[sid][gt]["elo"] = DEFAULT_RATING
                         
                         if sid in players and gt == players[sid]:
