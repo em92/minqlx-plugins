@@ -7,17 +7,23 @@ from balance import balance
 from time import time
 
 
+def noop(*args, **kwargs):
+    return None
+
+
 class FakeChannel:
-    reply = print
+    reply = noop
+
 
 channel = FakeChannel()
+
 
 class TestBalance(unittest.TestCase):
 
     def setUp(self):
         setup_plugin()
         setup_cvars({
-            "qlx_balanceUseLocal": (False, bool),
+            "qlx_balanceUseLocal": "0",
         })
         setup_game_in_progress()
         connected_players()
@@ -33,7 +39,7 @@ class TestBalance(unittest.TestCase):
             ratings[player.steam_id] = {gametype: {'elo': elo, 'time': time()}}
         self.plugin.ratings = ratings
 
-    def test_1(self):
+    def test_float_suggestion_diff(self):
         eugene = fake_player(1, "eugene", "red")
         xaero = fake_player(2, "Xaero", "red")
         fast4you = fake_player(3, "fast4you", "red")
@@ -54,7 +60,12 @@ class TestBalance(unittest.TestCase):
             (syrumz, 34.11), (indie, 30.57), (shazam, 26.89), (lookaround, 18.34)
         ])
 
-        setup_cvar("qlx_balanceMinimumSuggestionDiff", (1.2, float))
+        setup_cvar("qlx_balanceMinimumSuggestionDiff", "1.2")
 
-        self.plugin.callback_teams(list(range(1, 9)), channel)
+        exception_raised = None
+        try:
+            self.plugin.callback_teams(list(range(1, 9)), channel)
+        except ValueError as e:
+            exception_raised = e
 
+        self.assertIsNone(exception_raised, "Unexpected exception")
