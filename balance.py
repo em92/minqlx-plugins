@@ -107,6 +107,7 @@ class balance(minqlx.Plugin):
     def handle_new_game(self):
         # reset ratings cache on start
         if self.game.state == "warmup":
+            self.api_url = "http://{}/{}/".format(self.get_cvar("qlx_balanceUrl"), self.get_cvar("qlx_balanceApi"))
             with self.ratings_lock:
                 self.ratings = {}
 
