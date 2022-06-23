@@ -44,6 +44,7 @@ class balance(minqlx.Plugin):
         self.add_command(("getrating", "getelo", "elo"), self.cmd_getrating, usage="<id> [gametype]")
         self.add_command(("remrating", "remelo"), self.cmd_remrating, 3, usage="<id>")
         self.add_command("balance", self.cmd_balance, 1)
+        self.add_command("elodisplaytoggle", self.cmd_elo_display_toggle, 1)
         self.add_command(("teams", "teens"), self.cmd_teams)
         self.add_command("do", self.cmd_do, 1)
         self.add_command(("agree", "a"), self.cmd_agree, client_cmd_perm=0)
@@ -66,9 +67,19 @@ class balance(minqlx.Plugin):
         self.set_cvar_once("qlx_balanceAuto", "1")
         self.set_cvar_once("qlx_balanceMinimumSuggestionDiff", "25")
         self.set_cvar_once("qlx_balanceApi", "elo")
+        self.set_cvar_once("qlx_balanceShowRatings", "1")
 
         self.use_local = self.get_cvar("qlx_balanceUseLocal", bool)
         self.api_url = "http://{}/{}/".format(self.get_cvar("qlx_balanceUrl"), self.get_cvar("qlx_balanceApi"))
+
+    def cmd_elo_display_toggle(self, player, msg, channel):
+        old_value = self.get_cvar("qlx_balanceShowRatings", int)
+        new_value = int(not old_value)
+        self.set_cvar("qlx_balanceShowRatings", str(new_value))
+        if new_value:
+            player.tell("Ratings are now shown")
+        else:
+            player.tell("Ratings are now hidden")
 
     def handle_round_countdown(self, *args, **kwargs):
         if all(self.suggested_agree):
@@ -524,7 +535,11 @@ class balance(minqlx.Plugin):
         if gt not in EXT_SUPPORTED_GAMETYPES:
             player.tell("This game mode is not supported by the balance plugin.")
             return minqlx.RET_STOP_ALL
-        
+
+        if not self.get_cvar("qlx_balanceShowRatings", bool):
+            player.tell("Ratings are hidden.")
+            return minqlx.RET_STOP_ALL
+
         players = dict([(p.steam_id, gt) for p in self.players()])
         self.add_request(players, self.callback_ratings, channel)
 
