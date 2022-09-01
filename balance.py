@@ -608,8 +608,8 @@ class balance(minqlx.Plugin):
         if team:
             for p in team:
                 avg += self.ratings[p.steam_id][gametype]["elo"]**power
-            avg = avg ** (1/power)
             avg /= len(team)
+            avg = avg ** (1/power)
 
         return avg
 
