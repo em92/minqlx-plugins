@@ -68,6 +68,7 @@ class balance(minqlx.Plugin):
         self.set_cvar_once("qlx_balanceMinimumSuggestionDiff", "25")
         self.set_cvar_once("qlx_balanceApi", "elo")
         self.set_cvar_once("qlx_balanceShowRatings", "1")
+        self.set_cvar_once("qlx_balancePower", "1")
 
         self.use_local = self.get_cvar("qlx_balanceUseLocal", bool)
         self.api_url = "http://{}/{}/".format(self.get_cvar("qlx_balanceUrl"), self.get_cvar("qlx_balanceApi"))
@@ -603,9 +604,11 @@ class balance(minqlx.Plugin):
     def team_average(self, team, gametype):
         """Calculates the average rating of a team."""
         avg = 0
+        power = self.get_cvar("qlx_balancePower", float)
         if team:
             for p in team:
-                avg += self.ratings[p.steam_id][gametype]["elo"]
+                avg += self.ratings[p.steam_id][gametype]["elo"]**power
+            avg = avg ** (1/power)
             avg /= len(team)
 
         return avg
